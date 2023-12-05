@@ -1,7 +1,7 @@
 name: "~Sandbox"
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       ARCHITECTURE:
         type: string

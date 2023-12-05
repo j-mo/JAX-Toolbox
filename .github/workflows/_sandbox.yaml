@@ -9,18 +9,24 @@ on:
       CUDA_IMAGE:
         type: string
         required: true
+        default: 'latest'
       SRC_JAX:
         type: string
         required: true
+        default: 'https://github.com/google/jax.git#main'
       SRC_XLA:
         type: string
         required: true
+        default: 'https://github.com/openxla/xla.git#main'
       SRC_TE:
         type: string
         required: true
+        default: 'https://github.com/NVIDIA/TransformerEngine.git#main'
       SRC_T5X:
         type: string
         required: true
+        default: 'https://github.com/google-research/t5x.git#main'
+
 
 permissions:
   contents: read  # to fetch code

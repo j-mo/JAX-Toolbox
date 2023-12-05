@@ -21,12 +21,7 @@ on:
       SRC_T5X:
         type: string
         required: true
-      SRC_PAXML:
-        type: string
-        required: true
-      SRC_PRAXIS:
-        type: string
-        required: true
+
     outputs:
       TAG_BASE:
         description: "Tags of the base image built"
@@ -86,8 +81,6 @@ jobs:
           parse_git_src XLA    "${{ inputs.SRC_XLA }}"
           parse_git_src TE     "${{ inputs.SRC_TE }}"
           parse_git_src T5X    "${{ inputs.SRC_T5X }}"
-          parse_git_src PAXML  "${{ inputs.SRC_PAXML }}"
-          parse_git_src PRAXIS "${{ inputs.SRC_PRAXIS }}"
 
   build-base:
     needs: metadata

@@ -9,23 +9,37 @@ on:
       CUDA_IMAGE:
         type: string
         required: true
-        default: 'latest'
       SRC_JAX:
         type: string
         required: true
-        default: 'https://github.com/google/jax.git#main'
       SRC_XLA:
         type: string
         required: true
-        default: 'https://github.com/openxla/xla.git#main'
       SRC_TE:
         type: string
         required: true
-        default: 'https://github.com/NVIDIA/TransformerEngine.git#main'
       SRC_T5X:
         type: string
         required: true
-        default: 'https://github.com/google-research/t5x.git#main'
+      SRC_PAXML:
+        type: string
+        required: true
+      SRC_PRAXIS:
+        type: string
+        required: true
+    outputs:
+      TAG_BASE:
+        description: "Tags of the base image built"
+        value: ${{ jobs.build-base.outputs.DOCKER_TAG }}
+      TAG_JAX:
+        description: "Tags of the JAX image built"
+        value: ${{ jobs.build-jax.outputs.DOCKER_TAG_FINAL }}
+      TAG_T5X:
+        description: "Tags of the T5X image built"
+        value: ${{ jobs.build-t5x.outputs.DOCKER_TAG_FINAL }}
+      TAG_PAX:
+        description: "Tags of the PAX image built"
+        value: ${{ jobs.build-pax.outputs.DOCKER_TAG_FINAL }}
 
 
 permissions:
@@ -47,7 +61,10 @@ jobs:
       REF_TE: ${{ steps.parse-inputs.outputs.REF_TE }}
       REPO_T5X: ${{ steps.parse-inputs.outputs.REPO_T5X }}
       REF_T5X: ${{ steps.parse-inputs.outputs.REF_T5X }}
-
+      REPO_PAXML: ${{ steps.parse-inputs.outputs.REPO_PAXML }}
+      REF_PAXML: ${{ steps.parse-inputs.outputs.REF_PAXML }}
+      REPO_PRAXIS: ${{ steps.parse-inputs.outputs.REPO_PRAXIS }}
+      REF_PRAXIS: ${{ steps.parse-inputs.outputs.REF_PRAXIS }}
     steps:
       - name: Check out the repository under ${GITHUB_WORKSPACE}
         uses: actions/checkout@v3
@@ -70,6 +87,8 @@ jobs:
           parse_git_src XLA    "${{ inputs.SRC_XLA }}"
           parse_git_src TE     "${{ inputs.SRC_TE }}"
           parse_git_src T5X    "${{ inputs.SRC_T5X }}"
+          parse_git_src PAXML  "${{ inputs.SRC_PAXML }}"
+          parse_git_src PRAXIS "${{ inputs.SRC_PRAXIS }}"
 
   build-base:
     needs: metadata
@@ -111,6 +130,7 @@ jobs:
     needs: metadata
     uses: ./.github/workflows/_test_distribution.yaml
     secrets: inherit
+
 
   test-t5x-fmha:
     needs: build-t5x

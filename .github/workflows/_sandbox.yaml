@@ -44,6 +44,7 @@ jobs:
     secrets: inherit
 
   test-t5x-fmha:
+    needs: [test-distribution, build-t5x]
     if: inputs.ARCHITECTURE == 'amd64'  # arm64 runners n/a
     uses: ./.github/workflows/_test_t5x_fmha.yaml
     with:

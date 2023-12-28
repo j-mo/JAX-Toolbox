@@ -51,26 +51,15 @@ jobs:
       TRIAL_BRANCH: ${{ inputs.TRIAL_BRANCH }}
     secrets: inherit
 
-  build-t5x:
-    needs: [metadata, build-jax]
-    if: inputs.ARCHITECTURE == 'amd64'  # T5X arm64 build is wip in PR 252
-    uses: ./.github/workflows/_build_t5x.yaml
-    with:
-      ARCHITECTURE: amd64
-      BUILD_DATE: ${{ needs.metadata.outputs.BUILD_DATE }}
-      BASE_IMAGE: ${{ needs.build-jax.outputs.DOCKER_TAG_MEALKIT }}
-    secrets: inherit
-
   test-distribution:
     needs: metadata
     uses: ./.github/workflows/_test_distribution.yaml
     secrets: inherit
 
   test-t5x-fmha:
-    needs: build-t5x
     if: inputs.ARCHITECTURE == 'amd64'  # arm64 runners n/a
     uses: ./.github/workflows/_test_t5x_fmha.yaml
     with:
-      T5X_IMAGE: ${{ needs.build-t5x.outputs.DOCKER_TAG_FINAL }}
+      T5X_IMAGE: ghcr.io/nvidia/upstream-t5x:latest
     secrets: inherit
  

@@ -3,7 +3,7 @@ name: "~Sandbox"
 run-name: CI-${{ inputs.ARCHITECTURE }}
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       ARCHITECTURE:
         type: string
